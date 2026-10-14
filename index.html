@@ -4,46 +4,98 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Haorui Yu</title>
-<meta name="description" content="Haorui Yu — installation, performance and moving image; doctoral research at the University of Dundee.">
+<meta name="description" content="Haorui Yu — installation, performance and moving image; doctoral research at the University of Dundee on how machines read art.">
+<script>document.documentElement.classList.add('js');if(matchMedia('(min-width: 768px) and (prefers-reduced-motion: no-preference)').matches)document.documentElement.classList.add('motion');</script>
 <style>
   :root{
     color-scheme: light;
-    --ink:#141414;
-    --ink-2:#5c5c5c;
-    --ink-3:#8a8a8a;
-    --rule:#e2e0dc;
-    --bg:#faf9f7;
-    --band:#f1efea;
+    --ink:#141414; --ink-2:#5c5c5c; --ink-3:#8a8a8a;
+    --rule:#e2e0dc; --bg:#faf9f7; --band:#f1efea;
+    --slip:#f1ede4; --slip-edge:#d9d2c3;
+    --machine:#4a6a8a;            /* the measurement layer: real dimensions only */
     --measure:34rem;
+    --gut:clamp(16px,5vw,72px);
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Songti SC","Noto Serif CJK SC",serif;
   }
   *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font:400 17px/1.6 "Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Songti SC","Noto Serif CJK SC",serif;
-    -webkit-font-smoothing:antialiased;
-  }
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--serif);-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none;border-bottom:1px solid var(--rule)}
   a:hover{border-bottom-color:var(--ink)}
   .wrap{max-width:72rem;margin:0 auto;padding:0 1rem}
   @media(min-width:44rem){.wrap{padding:0 2rem}}
+  .kicker{font:400 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+  .num{display:block;font:400 12.5px/1 var(--mono);color:var(--ink-3);margin:0 0 .9rem}
 
-  /* header */
-  header{padding:5.5rem 0 0}
-  .top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:1rem 2rem;margin:0 0 1.6rem}
-  h1{font-size:clamp(1.9rem,4.5vw,2.6rem);font-weight:400;letter-spacing:-.015em;margin:0}
-  h1 .cn{font-size:.6em;color:var(--ink-3);margin-left:.6rem;letter-spacing:0}
-  nav{font:400 13.5px/1 var(--mono);display:flex;gap:1.4rem}
-  nav a{color:var(--ink-2)}
-  .standfirst{max-width:var(--measure);color:var(--ink-2);margin:0}
-  .standfirst em{color:var(--ink);font-style:italic}
+  /* ---------- hero: one painting as a field of dots, with its real size ---------- */
+  .hero{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden}
+  .hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .hero .fallback{display:none}
+  .no-gl .fallback{display:block;position:absolute;right:8vw;top:14vh;height:70vh;width:auto;opacity:.22;filter:grayscale(1)}
+  .marks{position:absolute;inset:0;z-index:1;pointer-events:none;width:100%;height:100%}
+  .marks text{font:400 11px var(--mono);fill:var(--machine)}
+  .marks .ln{stroke:var(--machine);stroke-width:1;fill:none}
+  .hero nav{position:absolute;top:24px;right:var(--gut);z-index:3;font:400 13px/1 var(--mono);display:flex;gap:1.3rem}
+  .hero nav a{color:var(--ink-2);border-bottom-color:transparent}
+  .hero nav a:hover{color:var(--ink);border-bottom-color:var(--ink)}
+  .hero-text{position:absolute;left:var(--gut);top:clamp(88px,18vh,170px);max-width:30rem;z-index:2}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:400;letter-spacing:-.015em;margin:0;line-height:1.15}
+  .hero h1 .cn{display:block;font-size:.5em;color:var(--ink-3);letter-spacing:.3em;margin-top:.5rem}
+  .hero p{color:var(--ink-2);margin:1.4rem 0 0;max-width:24rem}
+  .hero p em{color:var(--ink)}
+  .readout{position:absolute;right:var(--gut);bottom:28px;z-index:2;font:400 11.5px/1.6 var(--mono);color:var(--machine);text-align:right;max-width:calc(100% - 2*var(--gut))}
+  .hint{position:absolute;left:var(--gut);bottom:28px;z-index:2;font:400 11.5px var(--mono);color:var(--ink-3)}
+  @media (max-width:767px){
+    .hero nav{top:18px;gap:1.1rem}
+    .hero-text{top:64px}
+    .hero p{font-size:15.5px}
+    .readout,.hint{display:none}
+  }
 
-  /* index of works */
-  .index{list-style:none;margin:3.5rem 0 0;padding:0;border-top:1px solid var(--rule);font-size:15.5px}
+  /* ---------- life: bamboo slips ---------- */
+  .life{position:relative;border-top:1px solid var(--rule);padding:4.5rem 0 1.5rem;--band:40px}
+  .life-head{padding:0 var(--gut) 1.6rem}
+  .life-head h2{font-weight:400;font-size:1.6rem;margin:.6rem 0 0}
+  .howto{font:400 12px/1.5 var(--mono);color:var(--ink-3);margin:.5rem 0 0}
+  .howto .m{display:none}
+  .slips{list-style:none;margin:0;display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:.4rem var(--gut) 1.6rem;-webkit-overflow-scrolling:touch}
+  .slips::before,.slips::after{content:none}
+  .slip{position:relative;flex:0 0 auto;width:156px;height:440px;perspective:1100px;scroll-snap-align:start;cursor:pointer}
+  .slip-turn,.slip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d}
+  .slip-turn{transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+  .slip.turned .slip-turn{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--slip-edge);background:var(--slip);overflow:hidden}
+  .face::before,.face::after{content:"";position:absolute;left:-1px;right:-1px;height:5px;background:rgba(20,20,20,.55);z-index:1}
+  .face::before{top:var(--band)} .face::after{bottom:var(--band)}
+  .front{display:flex;flex-direction:column;align-items:center;padding:14px 10px}
+  .front .yr{font:400 12px var(--mono);color:var(--ink-2)}
+  .front .v{writing-mode:vertical-rl;font-size:1.25rem;letter-spacing:.35em;margin:auto 0;color:var(--ink);line-height:1.3}
+  .front .en{font:400 10.5px/1.35 var(--mono);color:var(--ink-3);text-align:center}
+  .back{transform:rotateY(180deg);background:#fff;display:flex;flex-direction:column}
+  .back img{width:100%;height:42%;object-fit:cover;display:block;flex:0 0 auto}
+  .back .txt{margin:0;padding:12px 11px;font-size:13.5px;line-height:1.42;color:var(--ink-2)}
+  .back .txt .yr{display:block;font:400 11px var(--mono);color:var(--ink-3);margin:0 0 .45rem}
+  .back .txt b{display:block;font-weight:400;color:var(--ink);margin:0 0 .3rem}
+  .back .to{display:inline-block;margin-top:.5rem;font:400 11px var(--mono);color:var(--ink)}
+  .back.plain{justify-content:center}
+  .turn{position:absolute;right:6px;bottom:6px;z-index:3;font:400 11px var(--mono);color:var(--ink);background:var(--bg);border:1px solid var(--rule);padding:.2rem .45rem;opacity:0;pointer-events:none}
+  .turn:focus-visible{opacity:1;pointer-events:auto}
+  @media(min-width:768px){html:not(.motion) .slips{flex-wrap:wrap;overflow:visible;row-gap:18px}}
+
+  html.motion .life{height:100vh;padding:0;overflow:hidden;--band:calc(50% - 25vh - 2px)}
+  html.motion .life-head{position:absolute;left:var(--gut);top:28px;z-index:3;padding:0}
+  html.motion .howto .m{display:inline} html.motion .howto .s{display:none}
+  html.motion .slips{position:absolute;left:0;top:0;height:100%;width:max-content;align-items:center;overflow:visible;gap:14px;
+    padding:0 70vw 0 64vw;will-change:transform;scroll-snap-type:none}
+  html.motion .slips::before,html.motion .slips::after{content:"";position:absolute;left:0;right:0;height:1px;background:rgba(20,20,20,.28)}
+  html.motion .slips::before{top:calc(50% - 25vh)} html.motion .slips::after{top:calc(50% + 25vh)}
+  html.motion .slip{width:168px;height:62vh;min-height:360px}
+
+  /* ---------- works ---------- */
+  .works-intro{padding:5rem 0 1rem;border-top:1px solid var(--rule)}
+  .works-intro h2{font-weight:400;font-size:1.6rem;margin:.6rem 0 0}
+  .index{list-style:none;margin:2.4rem 0 0;padding:0;border-top:1px solid var(--rule);font-size:15.5px}
   .index li{border-bottom:1px solid var(--rule)}
   .index a{display:grid;grid-template-columns:2.4rem 1fr auto;gap:.2rem 1rem;padding:.7rem 0;border:0}
   .index a:hover .t{text-decoration:underline;text-decoration-color:var(--ink-3);text-underline-offset:.2em}
@@ -57,44 +109,70 @@
     .index .y{grid-row:1;grid-column:4}
   }
 
-  /* works */
-  .work{padding:4.5rem 0;border-top:1px solid var(--rule);scroll-margin-top:1rem}
-  header + .work{border-top:0;padding-top:3.5rem}
-  .work-head{max-width:var(--measure);margin:0 0 2.2rem}
-  .num{display:block;font:400 12.5px/1 var(--mono);color:var(--ink-3);margin:0 0 .9rem}
-  h2{font-size:1.35rem;font-weight:400;letter-spacing:-.01em;margin:0 0 .3rem;font-style:italic}
-  h2 .cn{display:block;font-style:normal;color:var(--ink-3);font-size:.8em;margin-top:.25rem}
-  .meta{font:400 13.5px/1.55 var(--mono);color:var(--ink-2);margin:.55rem 0 0}
+  h2.ti{font-size:1.35rem;font-weight:400;letter-spacing:-.01em;margin:0 0 .3rem;font-style:italic;line-height:1.35}
+  h2.ti .cn{display:block;font-style:normal;color:var(--ink-3);font-size:.8em;margin-top:.25rem}
+  .meta{font:400 13px/1.55 var(--mono);color:var(--ink-2);margin:.6rem 0 0}
   .meta b{font-weight:400;color:var(--ink)}
-  .note{max-width:var(--measure);color:var(--ink-2);margin:1.4rem 0 0}
+  .note{max-width:var(--measure);color:var(--ink-2);margin:1.2rem 0 0;font-size:15.5px;line-height:1.55}
   .note .q{font-style:italic;color:var(--ink)}
-  .flag{
-    display:inline-block;font:400 11.5px/1 var(--mono);
-    letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);
-    border:1px solid var(--rule);padding:.34rem .5rem;border-radius:2px;margin-top:.7rem;
-  }
+  .flag{display:inline-block;font:400 11.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);
+    border:1px solid var(--rule);padding:.34rem .5rem;border-radius:2px;margin-top:.7rem}
+
+  /* horizontal galleries */
+  .gallery{position:relative;border-top:1px solid var(--rule);padding:4.5rem 0 1.5rem}
+  .cap{padding:0 var(--gut) 1.8rem;max-width:calc(var(--measure) + 2*var(--gut))}
+  .frames{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 var(--gut) 2rem;-webkit-overflow-scrolling:touch;position:relative}
+  .frames figure{margin:0;flex:0 0 auto;scroll-snap-align:start}
+  .frames img,.frames video,.frames svg{display:block;height:min(56vh,26rem);width:auto;background:#efeeeb}
+  .frames svg{background:none}
+  .frames figcaption{font:400 12px/1.5 var(--mono);color:var(--ink-3);padding-top:.5rem;width:0;min-width:100%}
+  .dim{display:none}
+  @media(min-width:768px){html:not(.motion) .frames{flex-wrap:wrap;overflow:visible;row-gap:1.2rem}}
+
+  html.motion .gallery{height:100vh;padding:0;overflow:hidden}
+  html.motion .cap{position:absolute;left:0;top:0;bottom:0;width:calc(var(--gut) + 19rem);max-width:none;z-index:3;background:var(--bg);
+    padding:clamp(28px,8vh,72px) 1.6rem 1.5rem var(--gut);border-right:1px solid var(--rule);overflow-y:auto}
+  html.motion .cap .note{font-size:14.5px}
+  html.motion .frames{position:absolute;left:0;top:0;height:100%;width:max-content;align-items:center;overflow:visible;gap:2.4vw;
+    padding:0 12vw 0 calc(var(--gut) + 22rem);will-change:transform;scroll-snap-type:none}
+  html.motion .frames img,html.motion .frames video,html.motion .frames svg{height:66vh}
+  html.motion .dim{display:block;position:absolute;left:calc(var(--gut) + 22rem);right:12vw;top:calc(17vh - .8rem - 20px);height:1px;pointer-events:none}
+  .dim i{position:absolute;inset:0;background:var(--machine);transform-origin:0 50%}
+  .dim::before,.dim::after{content:"";position:absolute;top:-5px;width:1px;height:11px;background:var(--machine)}
+  .dim::before{left:0} .dim::after{right:0}
+  .dim span{position:absolute;left:0;bottom:9px;font:400 11.5px var(--mono);color:var(--machine);white-space:nowrap}
+
+  /* vector drawings of published dimensions */
+  .drawing path{fill:none;stroke:var(--machine);stroke-width:1.3}
+  .drawing .hid{opacity:.35}
+  .drawing text{font:400 13px var(--mono);fill:var(--machine)}
+  html.js .drawing .dr{stroke-dasharray:1 1;stroke-dashoffset:1;transition:stroke-dashoffset 1.8s cubic-bezier(.2,.7,.2,1)}
+  html.js .drawing.on .dr{stroke-dashoffset:0}
+  html.js .drawing text{opacity:0;transition:opacity .8s .9s}
+  html.js .drawing.on text{opacity:1}
+
+  /* single-image works */
+  .work{padding:4.5rem 0;border-top:1px solid var(--rule);scroll-margin-top:1rem}
+  .work-head{max-width:var(--measure);margin:0 0 2.2rem}
+  .work figure{margin:0 0 1.1rem}
+  .work figure img{display:block;width:100%;height:auto;background:#efeeeb}
+  .work figure svg{display:block;width:100%;height:auto}
+  .work figcaption{font:400 12.5px/1.5 var(--mono);color:var(--ink-3);padding-top:.55rem}
+  .narrow{max-width:44rem}
   @media(min-width:62rem){
     .work{display:grid;grid-template-columns:17rem minmax(0,1fr);column-gap:3rem;align-items:start}
     .work-head{position:sticky;top:2rem;margin:0}
     .work-body{grid-column:2}
-    .work-head .note{margin-top:1.6rem;font-size:15.5px}
+    .work-head .note{margin-top:1.6rem}
   }
 
-  figure{margin:0 0 1.1rem}
-  figure img,figure video{display:block;width:100%;height:auto;background:#efeeeb}
-  figcaption{font:400 12.5px/1.5 var(--mono);color:var(--ink-3);padding-top:.55rem}
-  .pair{display:grid;grid-template-columns:1fr;gap:1.1rem}
-  @media(min-width:44rem){.pair{grid-template-columns:1fr 1fr}}
-  .narrow{max-width:44rem}
-
-  /* research */
+  /* ---------- research ---------- */
   .research{background:var(--band);border-top:1px solid var(--rule);padding:4.5rem 0 4rem}
-  .research h2{font-style:normal;font-size:1.6rem;margin:0 0 1.4rem}
+  .research h2{font-weight:400;font-size:1.6rem;margin:.6rem 0 1.4rem}
   .research .lede{max-width:var(--measure);margin:0 0 3.2rem}
   h3{font:400 12.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
      margin:0 0 1.1rem;padding-top:1.1rem;border-top:1px solid var(--rule)}
   .block{margin:0 0 3.4rem}
-
   .papers{list-style:none;margin:0 0 1.8rem;padding:0;max-width:46rem}
   .papers li{margin:0 0 1.15rem;font-size:15.5px;line-height:1.5}
   .papers .ti{display:inline;font-style:italic;color:var(--ink)}
@@ -102,7 +180,6 @@
   .papers .au b{font-weight:400;color:var(--ink)}
   .papers .ve{font:400 12.5px/1.6 var(--mono);margin-top:.15rem}
   .group{font:400 11.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .9rem}
-
   .demos{display:grid;grid-template-columns:1fr;gap:2.2rem 1.6rem}
   @media(min-width:44rem){.demos{grid-template-columns:1fr 1fr}}
   .demo{margin:0}
@@ -121,19 +198,116 @@
   footer{padding:4rem 0 6rem}
   .contact{font:400 14px/1.8 var(--mono);color:var(--ink-2);margin:0}
   .contact a{color:var(--ink)}
+  .colophon{font:400 12px/1.6 var(--mono);color:var(--ink-3);margin:2rem 0 0;max-width:40rem}
+
+  @media (prefers-reduced-motion:reduce){.slip-turn{transition:none}}
 </style>
 </head>
 <body>
 
-<div class="wrap">
-<header>
-  <div class="top">
+<!-- HERO -->
+<header class="hero" id="top">
+  <canvas id="cloud" aria-hidden="true"></canvas>
+  <img class="fallback" src="img/relations-2023-painting-01.jpg" width="1718" height="1800" alt="">
+  <svg class="marks" id="marks" aria-hidden="true"></svg>
+  <nav aria-label="Sections"><a href="#life">Life</a><a href="#work">Work</a><a href="#research">Research</a><a href="#contact">Contact</a></nav>
+  <div class="hero-text">
     <h1>Haorui Yu<span class="cn" lang="zh">于浩睿</span></h1>
-    <nav aria-label="Sections"><a href="#work">Work</a><a href="#research">Research</a><a href="#contact">Contact</a></nav>
+    <p>Installation, performance and moving image, and research on how machines read art. Since 2018 the work has circled one question: <em>what happens to an image once it is handed to something that will change it.</em></p>
   </div>
-  <p class="standfirst">Installation, performance and moving image. Since 2018 the work has circled one question: <em>what happens to an image once it is handed to something that will change it.</em></p>
+  <div class="readout"><i>Relations</i>, 2023 · painting 1 · transfer print on mirror-finish rippled steel · 130 × 121 cm<br><span class="xy" id="xy">x — · y —</span></div>
+  <div class="hint" aria-hidden="true">scroll ↓</div>
+</header>
 
-  <ol class="index" id="work" aria-label="Works">
+<!-- LIFE -->
+<section class="life" id="life" aria-labelledby="life-h">
+  <div class="life-head">
+    <span class="kicker">Life</span>
+    <h2 id="life-h">2016 — now</h2>
+    <p class="howto"><span class="m">Slips turn over as they pass. Click one to turn it back.</span><span class="s">Tap a slip to turn it over.</span></p>
+  </div>
+  <ol class="slips" id="slips">
+    <li class="slip" data-sheet="B1"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2016–2020</span><span class="v" lang="zh">绘画学士</span><span class="en">BA, Painting</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2016–2020</span><b>BA, Painting</b>School of Experimental Art, Tianjin Academy of Fine Arts</p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B5"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2019–2022</span><span class="v" lang="zh">奖学金</span><span class="en">Honours</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2019–2022</span><b>Honours</b>National Scholarship for Postgraduates (2022); First-Class Academic Scholarship and Merit Student (2021–22); Second-Class Academic Scholarship (2020–21); Cai Jin Scholarship, School of Experimental Art (2019–20)</p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B2"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2020</span><span class="v" lang="zh">学院奖</span><span class="en">Academy Award</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2020</span><b>Academy Award, Tianjin Academy of Fine Arts</b>for the BA graduation work</p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B3"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2020</span><span class="v" lang="zh">爱贤道</span><span class="en">Aixian River</span></div>
+      <div class="face back"><img src="vid/aixian-2020-site-web-poster.jpg" width="854" height="480" alt="" loading="lazy"><p class="txt"><span class="yr">2020</span><b><i>Aixian River</i></b>night public screening, Aixian, Tianjin <a class="to" href="#aixian">→ work 05</a></p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B4"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2020–2023</span><span class="v" lang="zh">实验艺术硕士</span><span class="en">MFA, Experimental Art</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2020–2023</span><b>MFA, Experimental Art</b>School of Experimental Art, Tianjin Academy of Fine Arts</p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B6"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2022</span><span class="v" lang="zh">重复无意义 · 风铃</span><span class="en">Ciyiyuan</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2022</span><b><i>Repetition Without Meaning</i> and <i>Wind Chime</i></b>solo-credited, Tianjin Ciyiyuan</p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B7"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2022</span><span class="v" lang="zh">莫干山</span><span class="en">Moganshan</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2022</span><b>Selected</b>Moganshan National Youth Spatial Art Exhibition</p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B8"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2022</span><span class="v" lang="zh">年代物</span><span class="en">ART100 Chronology</span></div>
+      <div class="face back"><img src="img/prayer-2021-install-01.jpg" width="1800" height="1012" alt="" loading="lazy"><p class="txt"><span class="yr">2022</span><b>ART100 <i>Chronology</i> <span lang="zh">「年代物」</span></b>published catalogue <a class="to" href="#prayer">→ work 02</a></p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B9"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2022</span><span class="v" lang="zh">起城转合</span><span class="en">invited</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2022</span><b>Invited</b><span lang="zh">《起城转合》，洪德美术馆</span></p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B10"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2023</span><span class="v" lang="zh">关系</span><span class="en">Relations</span></div>
+      <div class="face back"><img src="img/relations-2023-installation.jpg" width="1800" height="1227" alt="" loading="lazy"><p class="txt"><span class="yr">2023</span><b>MFA graduation work, <i>Relations</i> series</b> <a class="to" href="#relations">→ work 01</a></p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B11"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2024–</span><span class="v" lang="zh">博士</span><span class="en">PhD, Dundee</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2024–</span><b>PhD, Duncan of Jordanstone College of Art &amp; Design, University of Dundee</b>Working title: <i>Reading Chinese Art with Machines: What an Evaluation Can Claim</i> <a class="to" href="#research">→ research</a></p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B12"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2026–</span><span class="v" lang="zh">VULCA</span><span class="en">VULCA</span></div>
+      <div class="face back"><img src="vid/vulca-layers-loop-poster.jpg" width="960" height="540" alt="" loading="lazy"><p class="txt"><span class="yr">2026–</span><b>VULCA — architect and maintainer</b>open-source Python SDK and MCP server <a class="to" href="#research">→ demos</a></p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B13"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2026–</span><span class="v" lang="zh">写作工具</span><span class="en">Academic Writing Toolkit</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2026–</span><b>Academic Writing Toolkit — creator and maintainer</b>open source, v0.5.0 <a class="to" href="https://github.com/yha9806/academic-writing-toolkit">GitHub →</a></p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B14"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2026–</span><span class="v" lang="zh">许愿柳</span><span class="en">Wishing-Willow · lintel</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2026–</span><b>Wishing-Willow and lintel — author</b> <a class="to" href="#research">→ research</a></p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B15"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2026</span><span class="v" lang="zh">审稿</span><span class="en">Reviewer</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2026</span><b>Reviewer</b>ACM Computing Surveys</p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B16"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2026–</span><span class="v" lang="zh">博士生代表</span><span class="en">SGSAH</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2026–</span><b>Doctoral Researcher Representative</b>SGSAH Modern Languages Catalyst</p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B17"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2026</span><span class="v" lang="zh">工作坊</span><span class="en">Workshop</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2026</span><b>Co-designing the online workshop</b><i>Responsible and Critical GenAI Use for Arts and Humanities Doctoral Students</i> (December 2026)</p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+    <li class="slip" data-sheet="B18"><div class="slip-turn"><div class="slip-inner">
+      <div class="face front" aria-hidden="true"><span class="yr">2026–</span><span class="v" lang="zh">学术导师</span><span class="en">AcademiaOne</span></div>
+      <div class="face back plain"><p class="txt"><span class="yr">2026–</span><b>AcademiaOne</b>part-time academic tutor for practice-based PhD applicants</p></div>
+    </div></div><button class="turn" type="button" aria-pressed="false">Turn</button></li>
+  </ol>
+</section>
+
+<!-- WORKS -->
+<div class="wrap">
+<section class="works-intro" id="work" aria-labelledby="work-h">
+  <span class="kicker">Work</span>
+  <h2 id="work-h">Six works, 2020–2023</h2>
+  <ol class="index" aria-label="Works">
     <li><a href="#relations"><span class="n">01</span><span class="t">Relations</span><span class="m">transfer print on steel; installation</span><span class="y">2023</span></a></li>
     <li><a href="#prayer"><span class="n">02</span><span class="t">A Prayer That the Fragrance of Health May Ever Spill Through Your Breast</span><span class="m">collective installation</span><span class="y">2021</span></a></li>
     <li><a href="#sadness"><span class="n">03</span><span class="t">The Sadness Hidden in Small Things</span><span class="m">installation</span><span class="y">2021</span></a></li>
@@ -141,55 +315,56 @@
     <li><a href="#aixian"><span class="n">05</span><span class="t">Aixian River</span><span class="m">night projection</span><span class="y">2020</span></a></li>
     <li><a href="#fountain"><span class="n">06</span><span class="t">Nourished by the Fountain</span><span class="m">proposal, never realised</span><span class="y">2022</span></a></li>
   </ol>
-</header>
+</section>
+</div>
 
 <!-- 01 -->
-<section class="work" id="relations">
-  <div class="work-head">
+<section class="gallery" id="relations" aria-labelledby="relations-h">
+  <div class="cap">
     <span class="num">01</span>
-    <h2>Relations<span class="cn" lang="zh">关系系列</span></h2>
+    <h2 class="ti" id="relations-h">Relations<span class="cn" lang="zh">关系系列</span></h2>
     <p class="meta">2023 · transfer print on mirror-finish rippled steel; installation<br>
       Paintings <b>130 × 121 cm</b> · installation <b>100 × 100 × 100 cm</b><br>
       MFA graduation exhibition, Tianjin Academy of Fine Arts</p>
     <p class="note">The images are transferred onto mirror-finish rippled steel, chosen for the metallic coldness of the electronic image itself. The ripple keeps any picture from settling: the surface returns the room, and the viewer, into every reading of it. From the statement, written in 2023: <span class="q">“As AI-generated painting arrives and images are produced in frenzied quantity, the future and essence of painting become all the more worth discussing.”</span></p>
   </div>
-  <div class="work-body">
-    <div class="pair">
-      <figure><img src="img/relations-2023-painting-01.jpg" width="1718" height="1800" alt="Transfer-printed image on rippled steel panel, gold and green, two figures at the top edge" loading="lazy"></figure>
-      <figure><img src="img/relations-2023-painting-02.jpg" width="1674" height="1800" alt="Second transfer-printed steel panel" loading="lazy"></figure>
-    </div>
-    <figure class="narrow"><img src="img/relations-2023-installation.jpg" width="1800" height="1227" alt="Installation component of Relations" loading="lazy"></figure>
+  <div class="frames">
+    <div class="dim" aria-hidden="true"><i></i><span>paintings 130 × 121 cm · installation 100 × 100 × 100 cm</span></div>
+    <figure><svg class="drawing" viewBox="0 0 760 520" width="760" height="520" role="img" aria-label="Drawing: a 121 by 130 centimetre painting beside the 100 centimetre cube of the installation, at the same scale"><path class="dr" pathLength="1" d="M70 180 L312 180 L312 440 L70 440 L70 180"/><path class="dr" pathLength="1" d="M70 464 L312 464"/><path class="dr" pathLength="1" d="M70 459 L70 469"/><path class="dr" pathLength="1" d="M312 459 L312 469"/><text x="191" y="484" text-anchor="middle" transform="rotate(0.0 191 484)">121 cm</text><path class="dr" pathLength="1" d="M46 180 L46 440"/><path class="dr" pathLength="1" d="M51 180 L41 180"/><path class="dr" pathLength="1" d="M51 440 L41 440"/><text x="30" y="314" text-anchor="middle" transform="rotate(90.0 30 314)">130 cm</text><path class="dr hid" pathLength="1" d="M560 240 L733.2 340"/><path class="dr hid" pathLength="1" d="M560 240 L386.8 340"/><path class="dr hid" pathLength="1" d="M560 240 L560 40"/><path class="dr" pathLength="1" d="M560 40 L733.2 140 L560 240 L386.8 140 L560 40"/><path class="dr" pathLength="1" d="M733.2 340 L733.2 140"/><path class="dr" pathLength="1" d="M560 440 L560 240"/><path class="dr" pathLength="1" d="M386.8 340 L386.8 140"/><path class="dr" pathLength="1" d="M733.2 340 L560 440 L386.8 340"/><path class="dr" pathLength="1" d="M572 460.8 L745.2 360.8"/><path class="dr" pathLength="1" d="M569.5 456.5 L574.5 465.1"/><path class="dr" pathLength="1" d="M742.7 356.5 L747.7 365.1"/><text x="666.6" y="428.6" text-anchor="middle" transform="rotate(-30.0 666.6 428.6)">100 cm</text><path class="dr" pathLength="1" d="M374.8 360.8 L548 460.8"/><path class="dr" pathLength="1" d="M377.3 356.5 L372.3 365.1"/><path class="dr" pathLength="1" d="M550.5 456.5 L545.5 465.1"/><text x="453.4" y="428.6" text-anchor="middle" transform="rotate(30.0 453.4 428.6)">100 cm</text><path class="dr" pathLength="1" d="M362.8 340 L362.8 140"/><path class="dr" pathLength="1" d="M367.8 340 L357.8 340"/><path class="dr" pathLength="1" d="M367.8 140 L357.8 140"/><text x="346.8" y="244" text-anchor="middle" transform="rotate(-90.0 346.8 244)">100 cm</text><text x="30" y="34" text-anchor="start">Relations · 2023 · painting and installation, same scale</text></svg><figcaption>painting and installation, drawn to the same scale</figcaption></figure>
+    <figure><img src="img/relations-2023-painting-01.jpg" width="1718" height="1800" alt="Transfer-printed image on rippled steel panel, gold and green, two figures at the top edge" loading="lazy"><figcaption>painting 1</figcaption></figure>
+    <figure><img src="img/relations-2023-painting-02.jpg" width="1674" height="1800" alt="Second transfer-printed steel panel" loading="lazy"><figcaption>painting 2</figcaption></figure>
+    <figure><img src="img/relations-2023-installation.jpg" width="1800" height="1227" alt="Installation component of Relations" loading="lazy"><figcaption>installation</figcaption></figure>
   </div>
 </section>
 
 <!-- 02 -->
-<section class="work" id="prayer">
-  <div class="work-head">
+<section class="gallery" id="prayer" aria-labelledby="prayer-h">
+  <div class="cap">
     <span class="num">02</span>
-    <h2>A Prayer That the Fragrance of Health May Ever Spill Through Your Breast<span class="cn" lang="zh">祈愿健康的香气时时散溢在你胸中的坚强思想</span></h2>
+    <h2 class="ti" id="prayer-h">A Prayer That the Fragrance of Health May Ever Spill Through Your Breast<span class="cn" lang="zh">祈愿健康的香气时时散溢在你胸中的坚强思想</span></h2>
     <p class="meta">2021 · black cementitious material, polyethylene, ABS eco-resin, foaming solution<br>
       <b>300 × 300 × 150 cm</b>, dimensions variable (unit 20 × 20 × 150 cm)<br>
       <b>Collective work of 密云一支 (Miyun Yizhi)</b>: Feng Tai, Tang Shanshan, Wang Wanting, Ziyue Yang, Haorui Yu<br>
       <i>Epoch / ЭПОХА</i>, International Arts Fund, Moscow, online, 1 Jun – 15 Jul 2022 · ART100 <i>Chronology</i>, 2022, with catalogue · restaged, TJAFA MFA graduation exhibition, June 2023</p>
     <p class="note">Columns that consume themselves as they stand. Shown twice, two years apart, in different rooms and different states of decay.</p>
   </div>
-  <div class="work-body">
-    <figure><img src="img/prayer-2021-install-01.jpg" width="1800" height="1012" alt="Rows of tall black columns standing in a white room" loading="lazy"></figure>
-    <div class="pair">
-      <figure><img src="img/prayer-2021-detail-01.jpg" width="1262" height="1800" alt="Detail of a column" loading="lazy"></figure>
-      <figure><img src="img/prayer-2021-detail-02.jpg" width="1199" height="1800" alt="Second detail" loading="lazy"></figure>
-    </div>
-    <figure><video src="vid/prayer-2023-site.mp4" width="960" height="540" poster="vid/prayer-2023-site-poster.jpg" controls preload="none" playsinline></video>
-      <figcaption>2023 restaging, on site</figcaption></figure>
-    <figure class="narrow"><img src="img/prayer-2023-restaging.jpg" width="1800" height="1056" alt="The 2023 restaging" loading="lazy"></figure>
+  <div class="frames">
+    <div class="dim" aria-hidden="true"><i></i><span>300 × 300 × 150 cm, dimensions variable</span></div>
+    <figure><svg class="drawing" viewBox="0 0 720 570" width="720" height="570" role="img" aria-label="Drawing: bounding volume 300 by 300 by 150 centimetres, and one 20 by 20 by 150 centimetre unit"><path class="dr hid" pathLength="1" d="M300 200 L546.8 342.5"/><path class="dr hid" pathLength="1" d="M300 200 L53.2 342.5"/><path class="dr hid" pathLength="1" d="M300 200 L300 57.5"/><path class="dr" pathLength="1" d="M300 57.5 L546.8 200 L300 342.5 L53.2 200 L300 57.5"/><path class="dr" pathLength="1" d="M546.8 342.5 L546.8 200"/><path class="dr" pathLength="1" d="M300 485 L300 342.5"/><path class="dr" pathLength="1" d="M53.2 342.5 L53.2 200"/><path class="dr" pathLength="1" d="M546.8 342.5 L300 485 L53.2 342.5"/><path class="dr" pathLength="1" d="M313 507.5 L559.8 365"/><path class="dr" pathLength="1" d="M310.5 503.2 L315.5 511.8"/><path class="dr" pathLength="1" d="M557.3 360.7 L562.3 369.3"/><text x="444.4" y="454.1" text-anchor="middle" transform="rotate(-30.0 444.4 454.1)">300 cm</text><path class="dr" pathLength="1" d="M40.2 365 L287 507.5"/><path class="dr" pathLength="1" d="M42.7 360.7 L37.7 369.3"/><path class="dr" pathLength="1" d="M289.5 503.2 L284.5 511.8"/><text x="155.6" y="454.1" text-anchor="middle" transform="rotate(30.0 155.6 454.1)">300 cm</text><path class="dr" pathLength="1" d="M27.2 342.5 L27.2 200"/><path class="dr" pathLength="1" d="M32.2 342.5 L22.2 342.5"/><path class="dr" pathLength="1" d="M32.2 200 L22.2 200"/><text x="11.2" y="275.2" text-anchor="middle" transform="rotate(-90.0 11.2 275.2)">150 cm</text><path class="dr hid" pathLength="1" d="M640 350 L656.5 359.5"/><path class="dr hid" pathLength="1" d="M640 350 L623.5 359.5"/><path class="dr hid" pathLength="1" d="M640 350 L640 207.5"/><path class="dr" pathLength="1" d="M640 207.5 L656.5 217 L640 226.5 L623.5 217 L640 207.5"/><path class="dr" pathLength="1" d="M656.5 359.5 L656.5 217"/><path class="dr" pathLength="1" d="M640 369 L640 226.5"/><path class="dr" pathLength="1" d="M623.5 359.5 L623.5 217"/><path class="dr" pathLength="1" d="M656.5 359.5 L640 369 L623.5 359.5"/><text x="640" y="399" text-anchor="middle">unit 20 × 20 × 150</text><text x="30" y="34" text-anchor="start">A Prayer… · 2021 · bounding volume, dimensions variable</text></svg><figcaption>bounding volume and one unit</figcaption></figure>
+    <figure><img src="img/prayer-2021-install-01.jpg" width="1800" height="1012" alt="Rows of tall black columns standing in a white room" loading="lazy"><figcaption>2021, installation view</figcaption></figure>
+    <figure><img src="img/prayer-2021-detail-01.jpg" width="1262" height="1800" alt="Detail of a column" loading="lazy"><figcaption>detail</figcaption></figure>
+    <figure><img src="img/prayer-2021-detail-02.jpg" width="1199" height="1800" alt="Second detail" loading="lazy"><figcaption>detail</figcaption></figure>
+    <figure><video src="vid/prayer-2023-site.mp4" width="960" height="540" poster="vid/prayer-2023-site-poster.jpg" controls muted loop playsinline preload="none" data-autoplay></video><figcaption>2023 restaging, on site</figcaption></figure>
+    <figure><img src="img/prayer-2023-restaging.jpg" width="1800" height="1056" alt="The 2023 restaging" loading="lazy"><figcaption>2023 restaging</figcaption></figure>
   </div>
 </section>
 
 <!-- 03 -->
-<section class="work" id="sadness">
+<div class="wrap">
+<section class="work" id="sadness" aria-labelledby="sadness-h">
   <div class="work-head">
     <span class="num">03</span>
-    <h2>The Sadness Hidden in Small Things<span class="cn" lang="zh">被隐藏在细小事物中的悲伤</span></h2>
+    <h2 class="ti" id="sadness-h">The Sadness Hidden in Small Things<span class="cn" lang="zh">被隐藏在细小事物中的悲伤</span></h2>
     <p class="meta">2021 · treadmill, steel table, timber railway sleeper · dimensions variable<br>
       <i>The Moon Shines Bright Among the Sparse Stars</i>, four-person exhibition, 19 Nov – 2 Dec 2021</p>
     <p class="note">A treadmill runs against a timber railway sleeper. The machine built to go nowhere wears the wood away over the length of the exhibition. From its label: <span class="q">“the worn tree is a small thing, and the sadness is hidden inside it.”</span></p>
@@ -198,53 +373,50 @@
     <figure class="narrow"><img src="img/sadness-2021-site.jpg" width="1439" height="1800" alt="A weathered railway sleeper marked with a chalk target, strapped upright to a running treadmill on a steel table" loading="lazy"></figure>
   </div>
 </section>
+</div>
 
 <!-- 04 -->
-<section class="work" id="lie">
-  <div class="work-head">
+<section class="gallery" id="lie" aria-labelledby="lie-h">
+  <div class="cap">
     <span class="num">04</span>
-    <h2>For a Moment the Lie Becomes Truth</h2>
+    <h2 class="ti" id="lie-h">For a Moment the Lie Becomes Truth</h2>
     <p class="meta">2021 · performance and installation · dimensions variable<br>
       Bow, arrows, spray paint, model dove, balloon shark, video<br>
       With Ziyue Yang<br>
       <i>The Moon Shines Bright Among the Sparse Stars</i>, 19 Nov – 2 Dec 2021</p>
   </div>
-  <div class="work-body">
-    <div class="pair">
-      <figure><img src="img/lie-2021-01.jpg" width="1438" height="1800" alt="Installation view" loading="lazy"></figure>
-      <figure><img src="img/lie-2021-02.jpg" width="1440" height="1800" alt="Second installation view" loading="lazy"></figure>
-    </div>
-    <figure class="narrow"><img src="img/lie-2021-03.jpg" width="1439" height="1800" alt="Third view" loading="lazy"></figure>
+  <div class="frames">
+    <div class="dim" aria-hidden="true"><i></i><span>dimensions variable</span></div>
+    <figure><img src="img/lie-2021-01.jpg" width="1438" height="1800" alt="Installation view" loading="lazy"><figcaption>installation view</figcaption></figure>
+    <figure><img src="img/lie-2021-02.jpg" width="1440" height="1800" alt="Second installation view" loading="lazy"><figcaption>installation view</figcaption></figure>
+    <figure><img src="img/lie-2021-03.jpg" width="1439" height="1800" alt="Third view" loading="lazy"><figcaption>third view</figcaption></figure>
   </div>
 </section>
 
 <!-- 05 -->
-<section class="work" id="aixian">
-  <div class="work-head">
+<section class="gallery" id="aixian" aria-labelledby="aixian-h">
+  <div class="cap">
     <span class="num">05</span>
-    <h2>Aixian River<span class="cn" lang="zh">爱贤道</span></h2>
+    <h2 class="ti" id="aixian-h">Aixian River<span class="cn" lang="zh">爱贤道</span></h2>
     <p class="meta">16 December 2020, 20:00–20:30 · night projection · 12′02″<br>
       Rd. Aixian, Tianjin · RIVER STUDIO, School of Experimental Art, TJAFA<br>
       With Zhao Yang, Hu Qiongfang and Shu Ziyi · adviser Wang Shuai</p>
     <p class="note">Arcade games projected onto the closed roller shutters of a row of art-supply shops after the street had shut for the night. A public screen made of other people’s shopfronts, running thirty minutes, leaving nothing on the metal.</p>
   </div>
-  <div class="work-body">
-    <figure><video src="vid/aixian-2020-site-web.mp4" width="854" height="480" poster="vid/aixian-2020-site-web-poster.jpg" controls preload="none" playsinline></video>
-      <figcaption>On site, 16 December 2020 (excerpt from the 12′02″ projection)</figcaption></figure>
-    <div class="pair">
-      <figure><video src="vid/aixian-2020-three-shutter.mp4" width="1280" height="426" poster="vid/aixian-2020-three-shutter-poster.jpg" controls preload="none" playsinline muted loop></video>
-        <figcaption>Source layout across three shutters</figcaption></figure>
-      <figure><video src="vid/jumping-man.mp4" width="640" height="640" poster="vid/jumping-man-poster.jpg" controls preload="none" playsinline muted loop></video>
-        <figcaption>One of the projected games</figcaption></figure>
-    </div>
+  <div class="frames">
+    <div class="dim" aria-hidden="true"><i></i><span>16 December 2020 · 20:00 — 20:30 · 12′02″</span></div>
+    <figure><video src="vid/aixian-2020-site-web.mp4" width="854" height="480" poster="vid/aixian-2020-site-web-poster.jpg" controls muted loop playsinline preload="none" data-autoplay></video><figcaption>on site, 16 December 2020 (excerpt from the 12′02″ projection)</figcaption></figure>
+    <figure><video src="vid/aixian-2020-three-shutter.mp4" width="1280" height="426" poster="vid/aixian-2020-three-shutter-poster.jpg" controls muted loop playsinline preload="none" data-autoplay></video><figcaption>source layout across three shutters</figcaption></figure>
+    <figure><video src="vid/jumping-man.mp4" width="640" height="640" poster="vid/jumping-man-poster.jpg" controls muted loop playsinline preload="none" data-autoplay></video><figcaption>one of the projected games</figcaption></figure>
   </div>
 </section>
 
 <!-- 06 -->
-<section class="work" id="fountain">
+<div class="wrap">
+<section class="work" id="fountain" aria-labelledby="fountain-h">
   <div class="work-head">
     <span class="num">06</span>
-    <h2>Nourished by the Fountain<span class="cn" lang="zh">被喷泉滋养</span></h2>
+    <h2 class="ti" id="fountain-h">Nourished by the Fountain<span class="cn" lang="zh">被喷泉滋养</span></h2>
     <p class="meta">2022 · aluminium vessel, pump, nozzle, plant, clear water<br>
       h. <b>1.2 m</b> × l. approx. <b>3 m</b></p>
     <span class="flag">Proposal — never realised</span>
@@ -252,6 +424,7 @@
   </div>
   <div class="work-body">
     <figure class="narrow"><img src="img/fountain-2022-render.jpg" width="1800" height="1012" alt="Rendered view of a low aluminium water vessel with a plant and a fountain nozzle" loading="lazy"></figure>
+    <figure class="narrow"><svg class="drawing" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Drawing: an elevation 3 metres long and 1.2 metres high, as proposed"><path class="dr" pathLength="1" d="M60 108 L540 108 L540 300 L60 300 L60 108"/><path class="dr" pathLength="1" d="M60 324 L540 324"/><path class="dr" pathLength="1" d="M60 319 L60 329"/><path class="dr" pathLength="1" d="M540 319 L540 329"/><text x="300" y="344" text-anchor="middle" transform="rotate(0.0 300 344)">approx. 3 m</text><path class="dr" pathLength="1" d="M564 108 L564 300"/><path class="dr" pathLength="1" d="M559 108 L569 108"/><path class="dr" pathLength="1" d="M559 300 L569 300"/><text x="580" y="208" text-anchor="middle" transform="rotate(90.0 580 208)">1.2 m</text><text x="30" y="34" text-anchor="start">Nourished by the Fountain · 2022 · elevation, as proposed</text></svg><figcaption>the proposed size, as an elevation</figcaption></figure>
   </div>
 </section>
 </div>
@@ -314,7 +487,7 @@
         <p class="links"><a href="https://github.com/vulca-org/heritage-capture-qc">GitHub →</a></p>
       </article>
       <article class="demo">
-        <div class="media"><video src="vid/vulca-layers-loop.mp4" width="960" height="540" poster="vid/vulca-layers-loop-poster.jpg" autoplay muted loop playsinline preload="none" aria-label="Six layers of one picture added one by one: each layer alone on the left, the stack so far on the right"></video></div>
+        <div class="media"><video src="vid/vulca-layers-loop.mp4" width="960" height="540" poster="vid/vulca-layers-loop-poster.jpg" muted loop playsinline preload="none" data-autoplay aria-label="Six layers of one picture added one by one: each layer alone on the left, the stack so far on the right"></video></div>
         <h4>VULCA</h4>
         <p class="kind">Open-source SDK · image editing for agents</p>
         <p>Splits a picture into semantic layers, lets an agent redraw one layer, and puts the picture back together. The loop shows six layers from one test image, added in order.</p>
@@ -328,14 +501,147 @@
 
 <div class="wrap">
 <footer id="contact">
-  <p class="contact">
+  <span class="kicker">Contact</span>
+  <p class="contact" style="margin-top:1.2rem">
     Haorui Yu 于浩睿 · b. 1998, Tianjin · lives in Dundee<br>
-    School of Experimental Art, Tianjin Academy of Fine Arts — BA 2020, MFA 2023<br>
-    Duncan of Jordanstone College of Art and Design, University of Dundee — PhD candidate since 2024<br>
-    <a href="mailto:2655435@dundee.ac.uk">2655435@dundee.ac.uk</a> · <a href="https://scholar.google.com/citations?user=7vI0D4AAAAAJ">Google Scholar</a> · <a href="https://github.com/yha9806">GitHub</a>
+    Chinese (native) · English (fluent, academic and professional)<br>
+    <a href="mailto:2655435@dundee.ac.uk">2655435@dundee.ac.uk</a> · <a href="https://scholar.google.com/citations?user=7vI0D4AAAAAJ">Google Scholar</a> · <a href="https://orcid.org/0009-0001-2087-8879">ORCID</a> · <a href="https://github.com/yha9806">GitHub</a>
   </p>
+  <p class="colophon">The dots at the top are <i>Relations</i>, painting 1 (2023), resampled in your browser. The blue lines and drawings give real, published sizes and nothing else.</p>
 </footer>
 </div>
 
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/vendor/ScrollTrigger.min.js"></script>
+<script>
+(() => {
+  const root = document.documentElement;
+  const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* a slip turns over on click, tap, or its Turn button */
+  document.querySelectorAll('.slip').forEach(s => {
+    const b = s.querySelector('.turn');
+    s.addEventListener('click', e => {
+      if (e.target.closest('a')) return;
+      s.classList.toggle('turned'); b.setAttribute('aria-pressed', s.classList.contains('turned'));
+    });
+  });
+
+  /* drawings draw themselves once they are on screen */
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } }), {threshold: 0.35});
+  document.querySelectorAll('.drawing').forEach(d => reduce() ? d.classList.add('on') : io.observe(d));
+
+  /* videos play, muted, only while at least half of one is on screen */
+  const vio = new IntersectionObserver(es => es.forEach(e => { const v = e.target;
+    if (e.isIntersecting && !reduce()) { v.preload = 'auto'; v.play().catch(() => {}); } else v.pause(); }), {threshold: 0.5});
+  document.querySelectorAll('video[data-autoplay]').forEach(v => vio.observe(v));
+
+  if (!window.gsap || !window.ScrollTrigger) { root.classList.remove('motion'); return; }
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.matchMedia().add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
+    root.classList.add('motion');
+
+    // hero: the dots scatter as the page leaves the painting
+    ScrollTrigger.create({trigger: '#top', start: 'top top', end: 'bottom top', scrub: true,
+      onUpdate: s => window.__setScatter && window.__setScatter(s.progress)});
+
+    // life: vertical scroll carries the slips sideways; each turns over as it crosses the middle
+    const track = document.getElementById('slips');
+    const dist = () => Math.max(0, track.scrollWidth - innerWidth);
+    const slide = gsap.to(track, {x: () => -dist(), ease: 'none',
+      scrollTrigger: {trigger: '#life', pin: true, scrub: 0.8, end: () => '+=' + dist(), invalidateOnRefresh: true}});
+    track.querySelectorAll('.slip').forEach(s => gsap.to(s.querySelector('.slip-inner'), {rotateY: 180, ease: 'power1.inOut',
+      scrollTrigger: {trigger: s, containerAnimation: slide, start: 'left 62%', end: 'left 38%', scrub: true}}));
+
+    // works: frames slide past a fixed caption while the dimension line draws across them
+    document.querySelectorAll('.gallery').forEach(g => {
+      const fr = g.querySelector('.frames'), d = () => Math.max(0, fr.scrollWidth - innerWidth);
+      gsap.to(fr, {x: () => -d(), ease: 'none',
+        scrollTrigger: {trigger: g, pin: true, scrub: 0.8, end: () => '+=' + d(), invalidateOnRefresh: true}});
+      const line = g.querySelector('.dim i');
+      if (line) gsap.fromTo(line, {scaleX: 0}, {scaleX: 1, ease: 'none',
+        scrollTrigger: {trigger: g, start: 'top top', end: () => '+=' + d(), scrub: true, invalidateOnRefresh: true}});
+    });
+
+    // research turns up over the last work, like the next slip laid down
+    gsap.from('.research', {rotateX: -6, y: 80, transformOrigin: '50% 0%', transformPerspective: 1600, ease: 'none',
+      scrollTrigger: {trigger: '.research', start: 'top bottom', end: 'top 35%', scrub: true}});
+
+    return () => root.classList.remove('motion');
+  });
+  addEventListener('load', () => ScrollTrigger.refresh());
+})();
+</script>
+
+<script type="module">
+import {sampleImage, stipple, createPointCloud} from './js/pointcloud.js';
+const hero = document.getElementById('top'), canvas = document.getElementById('cloud'), svg = document.getElementById('marks');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const small = () => matchMedia('(max-width: 767px)').matches;
+const WCM = 121, HCM = 130;     // published size of the painting, in cm
+
+let cloud = null, pc = null;
+try {
+  cloud = stipple(await sampleImage('img/relations-2023-painting-01.jpg', small() ? 110 : 170));
+  pc = createPointCloud(canvas, cloud);
+} catch (e) { pc = null; }
+
+if (!pc) hero.classList.add('no-gl');
+else {
+  const S = pc.state; S.size = small() ? 5.0 : 5.6; S.ripple = reduce ? 0 : 1;
+  let box = null;
+  const layout = () => {
+    const w = hero.clientWidth, h = hero.clientHeight;
+    S.camZ = small() ? 4.6 : 2.75; S.x = small() ? 0 : 0.40; S.y = small() ? -0.50 : -0.02;
+    pc.resize(w, h); drawMarks(w, h); pc.render();
+  };
+  const drawMarks = (w, h) => {
+    const W = cloud.width, H = cloud.height;
+    const [x0, y0] = pc.project(-W/2, H/2), [x1, y1] = pc.project(W/2, -H/2), c = 14, o = 18;
+    const corner = (x, y, sx, sy) => `<path class="ln" d="M${x+sx*c} ${y} H${x} V${y+sy*c}"/>`;
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    svg.innerHTML =
+      corner(x0-o, y0-o, 1, 1) + corner(x1+o, y0-o, -1, 1) + corner(x0-o, y1+o, 1, -1) + corner(x1+o, y1+o, -1, -1) +
+      `<path class="ln draw" d="M${x0} ${y1+o+16} H${x1} M${x0} ${y1+o+11} v10 M${x1} ${y1+o+11} v10"/>` +
+      `<text x="${(x0+x1)/2}" y="${y1+o+32}" text-anchor="middle">${WCM} cm</text>` +
+      (small() ? '' : `<path class="ln draw" d="M${x1+o+16} ${y0} V${y1} M${x1+o+11} ${y0} h10 M${x1+o+11} ${y1} h10"/>` +
+      `<text x="${x1+o+24}" y="${(y0+y1)/2}" transform="rotate(90 ${x1+o+24} ${(y0+y1)/2})" text-anchor="middle">${HCM} cm</text>`) +
+      `<path class="ln" d="M${(x0+x1)/2-6} ${(y0+y1)/2} h12 M${(x0+x1)/2} ${(y0+y1)/2-6} v12" opacity=".5"/>`;
+    svg.querySelectorAll('.draw').forEach(p => {
+      const L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = reduce ? 0 : L;
+      if (!reduce) p.animate([{strokeDashoffset: L}, {strokeDashoffset: 0}], {duration: 1400, delay: 500, fill: 'forwards', easing: 'cubic-bezier(.2,.7,.2,1)'});
+    });
+    box = {x0, y0, x1, y1};
+  };
+  layout(); addEventListener('resize', layout);
+
+  // the readout gives the pointer's position on the painting, in cm
+  let mx = 0, my = 0;
+  const xy = document.getElementById('xy');
+  hero.addEventListener('pointermove', e => {
+    const r = hero.getBoundingClientRect();
+    mx = (e.clientX - r.left) / r.width - 0.5; my = (e.clientY - r.top) / r.height - 0.5;
+    const u = (e.clientX - r.left - box.x0) / (box.x1 - box.x0), t = (e.clientY - r.top - box.y0) / (box.y1 - box.y0);
+    xy.textContent = (u >= 0 && u <= 1 && t >= 0 && t <= 1) ? `x ${(u*WCM).toFixed(1)} cm · y ${(t*HCM).toFixed(1)} cm` : 'x — · y —';
+    if (reduce) pc.render();
+  });
+
+  // render only while the hero is on screen and the tab is visible
+  let visible = true, raf = 0, frames = 0; const t0 = performance.now();
+  const frame = () => {
+    const t = (performance.now() - t0) / 1000;
+    S.time = reduce ? 0 : t;
+    S.rotY = (reduce ? 0 : Math.sin(t*0.18)*0.28) + mx*0.35;
+    S.rotX = 0.06 + my*0.22;
+    pc.render(); frames++;
+  };
+  const loop = () => { cancelAnimationFrame(raf); const step = () => { frame(); if (visible && !document.hidden) raf = requestAnimationFrame(step); }; step(); };
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !reduce) loop(); }).observe(hero);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && visible && !reduce) loop(); });
+  if (reduce) frame(); else loop();
+  window.__setScatter = s => { S.scatter = s; svg.style.opacity = 1 - s; if (reduce || !visible || document.hidden) pc.render(); };
+  window.__heroStats = () => ({points: cloud.count, frames});
+}
+</script>
 </body>
 </html>
