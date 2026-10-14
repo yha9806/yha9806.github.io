@@ -35,7 +35,12 @@
   .no-gl .fallback{display:block;position:absolute;right:8vw;top:14vh;height:70vh;width:auto;opacity:.22;filter:grayscale(1)}
   .marks{position:absolute;inset:0;z-index:1;pointer-events:none;width:100%;height:100%}
   .marks text{font:400 11px var(--mono);fill:var(--machine)}
-  .marks .ln{stroke:var(--machine);stroke-width:1;fill:none}
+  .marks .ln,.marks line{stroke:var(--machine);stroke-width:1;fill:none}
+  .marks{transition:opacity 1s}
+  #steel{opacity:0;transition:opacity 1.3s ease}
+  #cloud{transition:opacity 1.3s ease}
+  .hero.steel #steel{opacity:1} .hero.steel #cloud{opacity:0}
+  .hero-text{transition:opacity .2s linear}
   .hero nav{position:absolute;top:24px;right:var(--gut);z-index:3;font:400 13px/1 var(--mono);display:flex;gap:1.3rem}
   .hero nav a{color:var(--ink-2);border-bottom-color:transparent}
   .hero nav a:hover{color:var(--ink);border-bottom-color:var(--ink)}
@@ -142,6 +147,39 @@
   .dim::before{left:0} .dim::after{right:0}
   .dim span{position:absolute;left:0;bottom:9px;font:400 11.5px var(--mono);color:var(--machine);white-space:nowrap}
 
+  /* frameless: the frame opens to the screen's edges (wide screens); elsewhere the picture is simply full width */
+  .frameless{position:relative;height:100vh;height:100svh;overflow:hidden;border-top:1px solid var(--rule)}
+  .frameless .pic{position:absolute;inset:0;overflow:hidden}
+  .frameless img{width:100%;height:100%;object-fit:cover;object-position:50% 32%;display:block}
+  .frameless .edge,.frameless .lab{display:none}
+  .frameless .over{position:absolute;left:var(--gut);bottom:28px;z-index:2;color:#fff;font:400 12px/1.6 var(--mono);text-shadow:0 0 12px rgba(0,0,0,.45)}
+  .frameless .over b{font:italic 400 1.6rem/1.2 var(--serif);display:block;margin-bottom:.3rem}
+  @media (max-width:767px){.frameless{height:72svh}}
+  html.motion .frameless{border-top:0}
+  html.motion .frameless .pic{inset:var(--iy,22vh) var(--ix,28vw)}
+  html.motion .frameless img{transform:scale(var(--s,1.08));transform-origin:50% 32%}
+  html.motion .frameless .edge{display:block;position:absolute;inset:var(--iy,22vh) var(--ix,28vw);border:1px solid var(--ink);opacity:var(--eo,1);pointer-events:none}
+  html.motion .frameless .lab{display:block;position:absolute;left:var(--ix,28vw);top:calc(var(--iy,22vh) - 28px);font:400 11.5px var(--mono);color:var(--ink-2);opacity:var(--eo,1)}
+  html.motion .frameless .over{opacity:calc(1 - var(--eo,1))}
+
+  /* wide screens: galleries run edge to edge, no gaps and no boxes; the caption card travels with the row */
+  html.motion .gallery{background:#111;border-top:0}
+  html.motion .gallery .cap{border-right:0;will-change:transform}
+  html.motion .gallery .frames{gap:0;padding:0 0 0 calc(var(--gut) + 19rem);align-items:stretch}
+  html.motion .gallery .frames figure{position:relative;height:100%}
+  html.motion .gallery .frames img,html.motion .gallery .frames video{height:100%;width:auto;background:#111}
+  html.motion .gallery .frames figure:has(svg){background:var(--bg);display:flex;align-items:center;padding:0 4vw}
+  /* videos take one screen width, letterboxed on black, so a small or very wide clip is not blown up to full height */
+  html.motion .gallery .frames figure:has(video){display:flex;align-items:center;width:100vw}
+  html.motion .gallery .frames video{width:100%;height:auto;max-height:100%}
+  html.motion .gallery .frames svg{height:62vh}
+  html.motion .gallery .frames figcaption{position:absolute;left:18px;bottom:16px;width:auto;min-width:0;padding:0;color:#fff;text-shadow:0 0 10px rgba(0,0,0,.6);pointer-events:none}
+  html.motion .gallery .frames figure:has(svg) figcaption{color:var(--ink-3);text-shadow:none}
+  html.motion .gallery .frames figure:has(video) figcaption{bottom:auto;top:16px}
+  html.motion .gallery .dim{left:calc(var(--gut) + 19rem);right:0;top:22px}
+  html.motion .gallery .dim i,html.motion .gallery .dim::before,html.motion .gallery .dim::after{background:#fff}
+  html.motion .gallery .dim span{color:#fff;text-shadow:0 0 10px rgba(0,0,0,.6)}
+
   /* vector drawings of published dimensions */
   .drawing path{fill:none;stroke:var(--machine);stroke-width:1.3}
   .drawing .hid{opacity:.35}
@@ -208,6 +246,7 @@
 <!-- HERO -->
 <header class="hero" id="top">
   <canvas id="cloud" aria-hidden="true"></canvas>
+  <canvas id="steel" aria-hidden="true"></canvas>
   <img class="fallback" src="img/relations-2023-painting-01.jpg" width="1718" height="1800" alt="">
   <svg class="marks" id="marks" aria-hidden="true"></svg>
   <nav aria-label="Sections"><a href="#life">Life</a><a href="#work">Work</a><a href="#research">Research</a><a href="#contact">Contact</a></nav>
@@ -215,8 +254,8 @@
     <h1>Haorui Yu<span class="cn" lang="zh">于浩睿</span></h1>
     <p>Installation, performance and moving image, and research on how machines read art. Since 2018 the work has circled one question: <em>what happens to an image once it is handed to something that will change it.</em></p>
   </div>
-  <div class="readout"><i>Relations</i>, 2023 · painting 1 · transfer print on mirror-finish rippled steel · 130 × 121 cm<br><span class="xy" id="xy">x — · y —</span></div>
-  <div class="hint" aria-hidden="true">scroll ↓</div>
+  <div class="readout"><i>Relations</i>, 2023 · painting 1 · transfer print on mirror-finish rippled steel · 130 × 121 cm<br>3D: size and material as recorded; thickness and ripple approximated · <span class="xy" id="xy">x — · y —</span></div>
+  <div class="hint" aria-hidden="true">move the pointer · scroll ↓</div>
 </header>
 
 <!-- LIFE -->
@@ -318,6 +357,14 @@
 </section>
 </div>
 
+<!-- 01 opens: a framed picture that loses its frame as you scroll -->
+<section class="frameless" id="relations-open" aria-label="Relations, installation">
+  <div class="pic"><img src="img/relations-2023-installation.jpg" width="1800" height="1227" alt="Installation component of Relations: a stainless-steel fryer with its lid open on a white-draped table" loading="lazy"></div>
+  <div class="edge" aria-hidden="true"></div>
+  <div class="lab" aria-hidden="true">01 · Relations · installation · 100 × 100 × 100 cm</div>
+  <div class="over"><b>Relations</b>installation · 100 × 100 × 100 cm · 2023</div>
+</section>
+
 <!-- 01 -->
 <section class="gallery" id="relations" aria-labelledby="relations-h">
   <div class="cap">
@@ -333,7 +380,6 @@
     <figure><svg class="drawing" viewBox="0 0 760 520" width="760" height="520" role="img" aria-label="Drawing: a 121 by 130 centimetre painting beside the 100 centimetre cube of the installation, at the same scale"><path class="dr" pathLength="1" d="M70 180 L312 180 L312 440 L70 440 L70 180"/><path class="dr" pathLength="1" d="M70 464 L312 464"/><path class="dr" pathLength="1" d="M70 459 L70 469"/><path class="dr" pathLength="1" d="M312 459 L312 469"/><text x="191" y="484" text-anchor="middle" transform="rotate(0.0 191 484)">121 cm</text><path class="dr" pathLength="1" d="M46 180 L46 440"/><path class="dr" pathLength="1" d="M51 180 L41 180"/><path class="dr" pathLength="1" d="M51 440 L41 440"/><text x="30" y="314" text-anchor="middle" transform="rotate(90.0 30 314)">130 cm</text><path class="dr hid" pathLength="1" d="M560 240 L733.2 340"/><path class="dr hid" pathLength="1" d="M560 240 L386.8 340"/><path class="dr hid" pathLength="1" d="M560 240 L560 40"/><path class="dr" pathLength="1" d="M560 40 L733.2 140 L560 240 L386.8 140 L560 40"/><path class="dr" pathLength="1" d="M733.2 340 L733.2 140"/><path class="dr" pathLength="1" d="M560 440 L560 240"/><path class="dr" pathLength="1" d="M386.8 340 L386.8 140"/><path class="dr" pathLength="1" d="M733.2 340 L560 440 L386.8 340"/><path class="dr" pathLength="1" d="M572 460.8 L745.2 360.8"/><path class="dr" pathLength="1" d="M569.5 456.5 L574.5 465.1"/><path class="dr" pathLength="1" d="M742.7 356.5 L747.7 365.1"/><text x="666.6" y="428.6" text-anchor="middle" transform="rotate(-30.0 666.6 428.6)">100 cm</text><path class="dr" pathLength="1" d="M374.8 360.8 L548 460.8"/><path class="dr" pathLength="1" d="M377.3 356.5 L372.3 365.1"/><path class="dr" pathLength="1" d="M550.5 456.5 L545.5 465.1"/><text x="453.4" y="428.6" text-anchor="middle" transform="rotate(30.0 453.4 428.6)">100 cm</text><path class="dr" pathLength="1" d="M362.8 340 L362.8 140"/><path class="dr" pathLength="1" d="M367.8 340 L357.8 340"/><path class="dr" pathLength="1" d="M367.8 140 L357.8 140"/><text x="346.8" y="244" text-anchor="middle" transform="rotate(-90.0 346.8 244)">100 cm</text><text x="30" y="34" text-anchor="start">Relations · 2023 · painting and installation, same scale</text></svg><figcaption>painting and installation, drawn to the same scale</figcaption></figure>
     <figure><img src="img/relations-2023-painting-01.jpg" width="1718" height="1800" alt="Transfer-printed image on rippled steel panel, gold and green, two figures at the top edge" loading="lazy"><figcaption>painting 1</figcaption></figure>
     <figure><img src="img/relations-2023-painting-02.jpg" width="1674" height="1800" alt="Second transfer-printed steel panel" loading="lazy"><figcaption>painting 2</figcaption></figure>
-    <figure><img src="img/relations-2023-installation.jpg" width="1800" height="1227" alt="Installation component of Relations" loading="lazy"><figcaption>installation</figcaption></figure>
   </div>
 </section>
 
@@ -507,7 +553,7 @@
     Chinese (native) · English (fluent, academic and professional)<br>
     <a href="mailto:2655435@dundee.ac.uk">2655435@dundee.ac.uk</a> · <a href="https://scholar.google.com/citations?user=7vI0D4AAAAAJ">Google Scholar</a> · <a href="https://orcid.org/0009-0001-2087-8879">ORCID</a> · <a href="https://github.com/yha9806">GitHub</a>
   </p>
-  <p class="colophon">The dots at the top are <i>Relations</i>, painting 1 (2023), resampled in your browser. The blue lines and drawings give real, published sizes and nothing else.</p>
+  <p class="colophon">The dots at the top are <i>Relations</i>, painting 1 (2023), resampled in your browser; they gather into a model of the steel sheet it is printed on. The model's size and material are as recorded; its thickness and ripple are approximations. The blue lines and drawings give real, published sizes and nothing else.</p>
 </footer>
 </div>
 
@@ -541,9 +587,9 @@
   gsap.matchMedia().add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
     root.classList.add('motion');
 
-    // hero: the dots scatter as the page leaves the painting
-    ScrollTrigger.create({trigger: '#top', start: 'top top', end: 'bottom top', scrub: true,
-      onUpdate: s => window.__setScatter && window.__setScatter(s.progress)});
+    // hero: pinned for a while; scrolling turns the steel sheet toward edge-on
+    ScrollTrigger.create({trigger: '#top', start: 'top top', end: '+=90%', pin: true, scrub: true,
+      onUpdate: s => window.__setTurn && window.__setTurn(s.progress)});
 
     // life: vertical scroll carries the slips sideways; each turns over as it crosses the middle
     const track = document.getElementById('slips');
@@ -553,11 +599,16 @@
     track.querySelectorAll('.slip').forEach(s => gsap.to(s.querySelector('.slip-inner'), {rotateY: 180, ease: 'power1.inOut',
       scrollTrigger: {trigger: s, containerAnimation: slide, start: 'left 62%', end: 'left 38%', scrub: true}}));
 
-    // works: frames slide past a fixed caption while the dimension line draws across them
+    // works: the row, caption card first, slides sideways while the dimension line draws across it
+    // works open: the frame around the installation opens to the screen's edges
+    gsap.timeline({scrollTrigger: {trigger: '#relations-open', start: 'top top', end: '+=120%', pin: true, scrub: 0.6}})
+      .fromTo('#relations-open', {'--iy': '22vh', '--ix': '28vw', '--s': 1.08, '--eo': 1}, {'--iy': '0vh', '--ix': '0vw', '--s': 1, '--eo': 0, ease: 'power2.inOut'});
+
     document.querySelectorAll('.gallery').forEach(g => {
       const fr = g.querySelector('.frames'), d = () => Math.max(0, fr.scrollWidth - innerWidth);
-      gsap.to(fr, {x: () => -d(), ease: 'none',
-        scrollTrigger: {trigger: g, pin: true, scrub: 0.8, end: () => '+=' + d(), invalidateOnRefresh: true}});
+      // the row holds for a short stretch first, so the caption card can be read before it slides away
+      gsap.timeline({scrollTrigger: {trigger: g, pin: true, scrub: 0.8, end: () => '+=' + d()/0.85, invalidateOnRefresh: true}})
+        .to({}, {duration: 0.15}).to([fr, g.querySelector('.cap')], {x: () => -d(), ease: 'none', duration: 0.85});
       const line = g.querySelector('.dim i');
       if (line) gsap.fromTo(line, {scaleX: 0}, {scaleX: 1, ease: 'none',
         scrollTrigger: {trigger: g, start: 'top top', end: () => '+=' + d(), scrub: true, invalidateOnRefresh: true}});
@@ -575,72 +626,90 @@
 
 <script type="module">
 import {sampleImage, stipple, createPointCloud} from './js/pointcloud.js';
-const hero = document.getElementById('top'), canvas = document.getElementById('cloud'), svg = document.getElementById('marks');
+import {createPanel} from './js/panel.js';
+const hero = document.getElementById('top'), svg = document.getElementById('marks'), heroText = hero.querySelector('.hero-text');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const small = () => matchMedia('(max-width: 767px)').matches;
 const WCM = 121, HCM = 130;     // published size of the painting, in cm
+const SRC = 'img/relations-2023-painting-01.jpg', CROP = [0.064, 0.025, 0.949, 0.934];   // the steel sheet itself, measured on the photograph
 
-let cloud = null, pc = null;
-try {
-  cloud = stipple(await sampleImage('img/relations-2023-painting-01.jpg', small() ? 110 : 170));
-  pc = createPointCloud(canvas, cloud);
-} catch (e) { pc = null; }
+// first a field of dots, then the dots gather into the sheet, then the sheet is the steel object
+let cloud = null, pc = null, panel = null;
+try { cloud = stipple(await sampleImage(SRC, small() ? 110 : 170, CROP)); pc = createPointCloud(document.getElementById('cloud'), cloud); } catch (e) { pc = null; }
+try { panel = await createPanel(document.getElementById('steel'), {src: SRC, crop: CROP, widthCm: WCM, heightCm: HCM}); } catch (e) { panel = null; }
 
-if (!pc) hero.classList.add('no-gl');
+if (!pc && !panel) hero.classList.add('no-gl');
 else {
-  const S = pc.state; S.size = small() ? 5.0 : 5.6; S.ripple = reduce ? 0 : 1;
-  let box = null;
+  const states = [pc && pc.state, panel && panel.state].filter(Boolean);
+  const base = {rotY: -0.55, rotX: 0.08};
+  if (pc) { pc.state.size = small() ? 5.0 : 5.6; pc.state.ripple = reduce ? 0 : 1; }
   const layout = () => {
-    const w = hero.clientWidth, h = hero.clientHeight;
-    S.camZ = small() ? 4.6 : 2.75; S.x = small() ? 0 : 0.40; S.y = small() ? -0.50 : -0.02;
-    pc.resize(w, h); drawMarks(w, h); pc.render();
+    const w = hero.clientWidth, h = hero.clientHeight, wide = !small();
+    const pose = wide ? {x: 0.43, y: 0.04, camZ: 3.0} : {x: 0.02, y: -0.40, camZ: 5.0};
+    base.rotY = wide ? -0.55 : -0.32;
+    for (const S of states) Object.assign(S, pose);
+    if (pc) pc.resize(w, h); if (panel) panel.resize(w, h);
+    draw();
   };
-  const drawMarks = (w, h) => {
-    const W = cloud.width, H = cloud.height;
-    const [x0, y0] = pc.project(-W/2, H/2), [x1, y1] = pc.project(W/2, -H/2), c = 14, o = 18;
-    const corner = (x, y, sx, sy) => `<path class="ln" d="M${x+sx*c} ${y} H${x} V${y+sy*c}"/>`;
-    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-    svg.innerHTML =
-      corner(x0-o, y0-o, 1, 1) + corner(x1+o, y0-o, -1, 1) + corner(x0-o, y1+o, 1, -1) + corner(x1+o, y1+o, -1, -1) +
-      `<path class="ln draw" d="M${x0} ${y1+o+16} H${x1} M${x0} ${y1+o+11} v10 M${x1} ${y1+o+11} v10"/>` +
-      `<text x="${(x0+x1)/2}" y="${y1+o+32}" text-anchor="middle">${WCM} cm</text>` +
-      (small() ? '' : `<path class="ln draw" d="M${x1+o+16} ${y0} V${y1} M${x1+o+11} ${y0} h10 M${x1+o+11} ${y1} h10"/>` +
-      `<text x="${x1+o+24}" y="${(y0+y1)/2}" transform="rotate(90 ${x1+o+24} ${(y0+y1)/2})" text-anchor="middle">${HCM} cm</text>`) +
-      `<path class="ln" d="M${(x0+x1)/2-6} ${(y0+y1)/2} h12 M${(x0+x1)/2} ${(y0+y1)/2-6} v12" opacity=".5"/>`;
-    svg.querySelectorAll('.draw').forEach(p => {
-      const L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = reduce ? 0 : L;
-      if (!reduce) p.animate([{strokeDashoffset: L}, {strokeDashoffset: 0}], {duration: 1400, delay: 500, fill: 'forwards', easing: 'cubic-bezier(.2,.7,.2,1)'});
-    });
-    box = {x0, y0, x1, y1};
-  };
-  layout(); addEventListener('resize', layout);
 
-  // the readout gives the pointer's position on the painting, in cm
-  let mx = 0, my = 0;
+  // dimension lines on the sheet's own plane, so they turn with it
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs, text) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text) e.textContent = text; return e; };
+  const ln = (a, b) => el('line', {x1: a[0], y1: a[1], x2: b[0], y2: b[1]});
+  const lab = (p, ang, t) => el('text', {x: p[0], y: p[1], 'text-anchor': 'middle', transform: `rotate(${ang} ${p[0]} ${p[1]})`}, t);
+  const marks = () => {
+    if (!panel) return;
+    const [W, H] = panel.size, hw = W/2, hh = H/2, o = 0.065, tk = 0.02, P = (x, y) => panel.project(x, y);
+    svg.setAttribute('viewBox', `0 0 ${panel.state.w} ${panel.state.h}`);
+    const b0 = P(-hw, -hh - o), b1 = P(hw, -hh - o), r0 = P(hw + o, hh), r1 = P(hw + o, -hh);
+    const angB = Math.atan2(b1[1] - b0[1], b1[0] - b0[0])*180/Math.PI, angR = Math.atan2(r1[1] - r0[1], r1[0] - r0[0])*180/Math.PI;
+    const kids = [ln(b0, b1), ln(P(-hw, -hh - o + tk), P(-hw, -hh - o - tk)), ln(P(hw, -hh - o + tk), P(hw, -hh - o - tk)),
+      lab(P(0, -hh - o - 0.05), angB, `${WCM} cm`)];
+    if (!small()) kids.push(ln(r0, r1), ln(P(hw + o - tk, hh), P(hw + o + tk, hh)), ln(P(hw + o - tk, -hh), P(hw + o + tk, -hh)),
+      lab(P(hw + o + 0.045, 0), angR - 180, `${HCM} cm`));
+    svg.replaceChildren(...kids);
+  };
+
+  // intro: a floating cloud (scatter 0.15) gathers to the flat sheet over 2.2 s, holds, then the steel fades in over the dots
+  const START = 0.15;
+  let gather = (reduce || !pc) ? 0 : START, steel = !pc || reduce, cloudOn = !!pc && !steel;
+  const ease = k => k < 0.5 ? 4*k*k*k : 1 - Math.pow(-2*k + 2, 3)/2;
+  const showSteel = () => { if (!panel) return; steel = true; hero.classList.add('steel'); svg.style.opacity = 1; setTimeout(() => { cloudOn = false; }, 1400); };
+  if (steel) { if (panel) hero.classList.add('steel'); else cloudOn = !!pc; }
+  else { svg.style.opacity = 0; const t0 = performance.now();
+    const tick = () => { const k = Math.max(0, Math.min(1, (performance.now() - t0 - 900)/2200)); gather = START*(1 - ease(k)); if (k < 1) requestAnimationFrame(tick); else setTimeout(showSteel, 400); };
+    requestAnimationFrame(tick); }
+
+  // pointer: the sheet leans toward it; the readout gives the point on the painting, in cm
+  let tx = 0, ty = 0, px = 0, py = 0, turn = 0;
   const xy = document.getElementById('xy');
   hero.addEventListener('pointermove', e => {
     const r = hero.getBoundingClientRect();
-    mx = (e.clientX - r.left) / r.width - 0.5; my = (e.clientY - r.top) / r.height - 0.5;
-    const u = (e.clientX - r.left - box.x0) / (box.x1 - box.x0), t = (e.clientY - r.top - box.y0) / (box.y1 - box.y0);
-    xy.textContent = (u >= 0 && u <= 1 && t >= 0 && t <= 1) ? `x ${(u*WCM).toFixed(1)} cm · y ${(t*HCM).toFixed(1)} cm` : 'x — · y —';
-    if (reduce) pc.render();
+    tx = (e.clientX - r.left)/r.width*2 - 1; ty = (e.clientY - r.top)/r.height*2 - 1;
+    const uv = panel && panel.pick(e.clientX - r.left, e.clientY - r.top);
+    xy.textContent = uv ? `x ${(uv[0]*WCM).toFixed(1)} cm · y ${(uv[1]*HCM).toFixed(1)} cm` : 'x — · y —';
+    if (reduce) { px = tx; py = ty; draw(); }
   });
 
-  // render only while the hero is on screen and the tab is visible
-  let visible = true, raf = 0, frames = 0; const t0 = performance.now();
-  const frame = () => {
-    const t = (performance.now() - t0) / 1000;
-    S.time = reduce ? 0 : t;
-    S.rotY = (reduce ? 0 : Math.sin(t*0.18)*0.28) + mx*0.35;
-    S.rotX = 0.06 + my*0.22;
-    pc.render(); frames++;
-  };
-  const loop = () => { cancelAnimationFrame(raf); const step = () => { frame(); if (visible && !document.hidden) raf = requestAnimationFrame(step); }; step(); };
+  let visible = true, raf = 0, frames = 0, last = performance.now(), time = 0;
+  function draw() {
+    for (const S of states) { S.rotY = base.rotY + px*0.45 + turn*1.95; S.rotX = base.rotX + py*0.18 - turn*0.12; S.time = time; }
+    if (pc && cloudOn) { pc.state.scatter = gather; pc.render(); }
+    if (panel) { panel.render(); marks(); }
+    heroText.style.opacity = 1 - Math.min(1, turn*1.6);
+    frames++;
+  }
+  const step = now => { const dt = Math.min(0.05, (now - last)/1000); last = now; time += dt;
+    px += (tx - px)*0.06; py += (ty - py)*0.06; draw();
+    if (visible && !document.hidden) raf = requestAnimationFrame(step); };
+  const loop = () => { cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(step); };
+  layout(); addEventListener('resize', layout);
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !reduce) loop(); }).observe(hero);
   document.addEventListener('visibilitychange', () => { if (!document.hidden && visible && !reduce) loop(); });
-  if (reduce) frame(); else loop();
-  window.__setScatter = s => { S.scatter = s; svg.style.opacity = 1 - s; if (reduce || !visible || document.hidden) pc.render(); };
-  window.__heroStats = () => ({points: cloud.count, frames});
+  if (!reduce) loop();
+  // scrolling (wide screens) turns the sheet toward edge-on while the hero is pinned
+  window.__setTurn = p => { turn = p; if (reduce || !visible || document.hidden) draw(); };
+  window.__heroStats = () => ({points: cloud ? cloud.count : 0, steel, frames});
 }
 </script>
 </body>

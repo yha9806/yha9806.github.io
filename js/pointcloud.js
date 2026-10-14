@@ -28,11 +28,14 @@ const rotY = a => { const c = Math.cos(a), s = Math.sin(a); return [c,0,-s,0, 0,
 const rotX = a => { const c = Math.cos(a), s = Math.sin(a); return [1,0,0,0, 0,c,s,0, 0,-s,c,0, 0,0,0,1]; };
 const trans = (x, y, z) => [1,0,0,0, 0,1,0,0, 0,0,1,0, x,y,z,1];
 
-export async function sampleImage(src, cols) {
+// crop = [u0, v0, u1, v1] in fractions of the image, to sample only part of it
+export async function sampleImage(src, cols, crop = [0, 0, 1, 1]) {
   const im = new Image(); im.decoding = 'async'; im.src = src; await im.decode();
-  const rows = Math.round(cols * im.naturalHeight / im.naturalWidth);
+  const sw = im.naturalWidth*(crop[2] - crop[0]), shh = im.naturalHeight*(crop[3] - crop[1]);
+  const rows = Math.round(cols * shh / sw);
   const c = document.createElement('canvas'); c.width = cols; c.height = rows;
-  const g = c.getContext('2d', {willReadFrequently: true}); g.drawImage(im, 0, 0, cols, rows);
+  const g = c.getContext('2d', {willReadFrequently: true});
+  g.drawImage(im, im.naturalWidth*crop[0], im.naturalHeight*crop[1], sw, shh, 0, 0, cols, rows);
   return {cols, rows, data: g.getImageData(0, 0, cols, rows).data};
 }
 
