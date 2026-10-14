@@ -180,6 +180,24 @@
   html.motion .gallery .dim i,html.motion .gallery .dim::before,html.motion .gallery .dim::after{background:#fff}
   html.motion .gallery .dim span{color:#fff;text-shadow:0 0 10px rgba(0,0,0,.6)}
 
+  /* cut-outs: works and the portrait without their backgrounds */
+  .frames figure.cut img,.work figure.cut img{background:none}
+  .frames figure.cut img{filter:drop-shadow(0 10px 18px rgba(0,0,0,.14))}
+  html.motion .gallery{background:var(--bg)}
+  html.motion .gallery .frames figure:has(video){background:#111}
+  html.motion .gallery .frames figure.cut{display:flex;align-items:center;justify-content:center;padding:9vh 3vw 11vh}
+  html.motion .gallery .frames figure.cut img{height:100%;width:auto;max-width:none;background:none}
+  html.motion .gallery .frames figure.cut figcaption{color:var(--ink-3);text-shadow:none}
+  html.motion .gallery .dim i,html.motion .gallery .dim::before,html.motion .gallery .dim::after{background:var(--machine)}
+  html.motion .gallery .dim span{color:var(--machine);text-shadow:none}
+  .hero-portrait{display:none}
+  @media (min-width:768px) and (min-height:640px){
+    .hero-portrait{display:block;position:absolute;left:var(--gut);bottom:0;height:min(40vh,380px);width:auto;z-index:2;transition:opacity .2s linear}
+    .hint{left:calc(var(--gut) + min(40vh,380px)*.6 + 24px)}
+  }
+  .contact-portrait{display:block;height:220px;width:auto;margin:0 0 1.4rem}
+  @media (min-width:768px){.contact-portrait{display:none}}
+
   /* vector drawings of published dimensions */
   .drawing path{fill:none;stroke:var(--machine);stroke-width:1.3}
   .drawing .hid{opacity:.35}
@@ -255,6 +273,7 @@
     <p>Installation, performance and moving image, and research on how machines read art. Since 2018 the work has circled one question: <em>what happens to an image once it is handed to something that will change it.</em></p>
   </div>
   <div class="readout"><i>Relations</i>, 2023 · painting 1 · transfer print on mirror-finish rippled steel · 130 × 121 cm<br>3D: size and material as recorded; thickness and ripple approximated · <span class="xy" id="xy">x — · y —</span></div>
+  <img class="portrait hero-portrait" src="img/cut/portrait-haorui.webp" width="652" height="1100" alt="Haorui Yu">
   <div class="hint" aria-hidden="true">move the pointer · scroll ↓</div>
 </header>
 
@@ -378,8 +397,9 @@
   <div class="frames">
     <div class="dim" aria-hidden="true"><i></i><span>paintings 130 × 121 cm · installation 100 × 100 × 100 cm</span></div>
     <figure><svg class="drawing" viewBox="0 0 760 520" width="760" height="520" role="img" aria-label="Drawing: a 121 by 130 centimetre painting beside the 100 centimetre cube of the installation, at the same scale"><path class="dr" pathLength="1" d="M70 180 L312 180 L312 440 L70 440 L70 180"/><path class="dr" pathLength="1" d="M70 464 L312 464"/><path class="dr" pathLength="1" d="M70 459 L70 469"/><path class="dr" pathLength="1" d="M312 459 L312 469"/><text x="191" y="484" text-anchor="middle" transform="rotate(0.0 191 484)">121 cm</text><path class="dr" pathLength="1" d="M46 180 L46 440"/><path class="dr" pathLength="1" d="M51 180 L41 180"/><path class="dr" pathLength="1" d="M51 440 L41 440"/><text x="30" y="314" text-anchor="middle" transform="rotate(90.0 30 314)">130 cm</text><path class="dr hid" pathLength="1" d="M560 240 L733.2 340"/><path class="dr hid" pathLength="1" d="M560 240 L386.8 340"/><path class="dr hid" pathLength="1" d="M560 240 L560 40"/><path class="dr" pathLength="1" d="M560 40 L733.2 140 L560 240 L386.8 140 L560 40"/><path class="dr" pathLength="1" d="M733.2 340 L733.2 140"/><path class="dr" pathLength="1" d="M560 440 L560 240"/><path class="dr" pathLength="1" d="M386.8 340 L386.8 140"/><path class="dr" pathLength="1" d="M733.2 340 L560 440 L386.8 340"/><path class="dr" pathLength="1" d="M572 460.8 L745.2 360.8"/><path class="dr" pathLength="1" d="M569.5 456.5 L574.5 465.1"/><path class="dr" pathLength="1" d="M742.7 356.5 L747.7 365.1"/><text x="666.6" y="428.6" text-anchor="middle" transform="rotate(-30.0 666.6 428.6)">100 cm</text><path class="dr" pathLength="1" d="M374.8 360.8 L548 460.8"/><path class="dr" pathLength="1" d="M377.3 356.5 L372.3 365.1"/><path class="dr" pathLength="1" d="M550.5 456.5 L545.5 465.1"/><text x="453.4" y="428.6" text-anchor="middle" transform="rotate(30.0 453.4 428.6)">100 cm</text><path class="dr" pathLength="1" d="M362.8 340 L362.8 140"/><path class="dr" pathLength="1" d="M367.8 340 L357.8 340"/><path class="dr" pathLength="1" d="M367.8 140 L357.8 140"/><text x="346.8" y="244" text-anchor="middle" transform="rotate(-90.0 346.8 244)">100 cm</text><text x="30" y="34" text-anchor="start">Relations · 2023 · painting and installation, same scale</text></svg><figcaption>painting and installation, drawn to the same scale</figcaption></figure>
-    <figure><img src="img/relations-2023-painting-01.jpg" width="1718" height="1800" alt="Transfer-printed image on rippled steel panel, gold and green, two figures at the top edge" loading="lazy"><figcaption>painting 1</figcaption></figure>
-    <figure><img src="img/relations-2023-painting-02.jpg" width="1674" height="1800" alt="Second transfer-printed steel panel" loading="lazy"><figcaption>painting 2</figcaption></figure>
+    <figure class="cut"><img src="img/cut/relations-2023-painting-01.webp" width="1206" height="1296" alt="Transfer-printed image on rippled steel panel, gold and green, two figures at the top edge" loading="lazy"><figcaption>painting 1</figcaption></figure>
+    <figure class="cut"><img src="img/cut/relations-2023-painting-02.webp" width="1206" height="1296" alt="Second transfer-printed steel panel" loading="lazy"><figcaption>painting 2</figcaption></figure>
+    <figure class="cut"><img src="img/cut/relations-2023-installation.webp" width="799" height="495" alt="Installation component of Relations: a stainless-steel fryer with its lid open" loading="lazy"><figcaption>installation</figcaption></figure>
   </div>
 </section>
 
@@ -398,8 +418,8 @@
     <div class="dim" aria-hidden="true"><i></i><span>300 × 300 × 150 cm, dimensions variable</span></div>
     <figure><svg class="drawing" viewBox="0 0 720 570" width="720" height="570" role="img" aria-label="Drawing: bounding volume 300 by 300 by 150 centimetres, and one 20 by 20 by 150 centimetre unit"><path class="dr hid" pathLength="1" d="M300 200 L546.8 342.5"/><path class="dr hid" pathLength="1" d="M300 200 L53.2 342.5"/><path class="dr hid" pathLength="1" d="M300 200 L300 57.5"/><path class="dr" pathLength="1" d="M300 57.5 L546.8 200 L300 342.5 L53.2 200 L300 57.5"/><path class="dr" pathLength="1" d="M546.8 342.5 L546.8 200"/><path class="dr" pathLength="1" d="M300 485 L300 342.5"/><path class="dr" pathLength="1" d="M53.2 342.5 L53.2 200"/><path class="dr" pathLength="1" d="M546.8 342.5 L300 485 L53.2 342.5"/><path class="dr" pathLength="1" d="M313 507.5 L559.8 365"/><path class="dr" pathLength="1" d="M310.5 503.2 L315.5 511.8"/><path class="dr" pathLength="1" d="M557.3 360.7 L562.3 369.3"/><text x="444.4" y="454.1" text-anchor="middle" transform="rotate(-30.0 444.4 454.1)">300 cm</text><path class="dr" pathLength="1" d="M40.2 365 L287 507.5"/><path class="dr" pathLength="1" d="M42.7 360.7 L37.7 369.3"/><path class="dr" pathLength="1" d="M289.5 503.2 L284.5 511.8"/><text x="155.6" y="454.1" text-anchor="middle" transform="rotate(30.0 155.6 454.1)">300 cm</text><path class="dr" pathLength="1" d="M27.2 342.5 L27.2 200"/><path class="dr" pathLength="1" d="M32.2 342.5 L22.2 342.5"/><path class="dr" pathLength="1" d="M32.2 200 L22.2 200"/><text x="11.2" y="275.2" text-anchor="middle" transform="rotate(-90.0 11.2 275.2)">150 cm</text><path class="dr hid" pathLength="1" d="M640 350 L656.5 359.5"/><path class="dr hid" pathLength="1" d="M640 350 L623.5 359.5"/><path class="dr hid" pathLength="1" d="M640 350 L640 207.5"/><path class="dr" pathLength="1" d="M640 207.5 L656.5 217 L640 226.5 L623.5 217 L640 207.5"/><path class="dr" pathLength="1" d="M656.5 359.5 L656.5 217"/><path class="dr" pathLength="1" d="M640 369 L640 226.5"/><path class="dr" pathLength="1" d="M623.5 359.5 L623.5 217"/><path class="dr" pathLength="1" d="M656.5 359.5 L640 369 L623.5 359.5"/><text x="640" y="399" text-anchor="middle">unit 20 × 20 × 150</text><text x="30" y="34" text-anchor="start">A Prayer… · 2021 · bounding volume, dimensions variable</text></svg><figcaption>bounding volume and one unit</figcaption></figure>
     <figure><img src="img/prayer-2021-install-01.jpg" width="1800" height="1012" alt="Rows of tall black columns standing in a white room" loading="lazy"><figcaption>2021, installation view</figcaption></figure>
-    <figure><img src="img/prayer-2021-detail-01.jpg" width="1262" height="1800" alt="Detail of a column" loading="lazy"><figcaption>detail</figcaption></figure>
-    <figure><img src="img/prayer-2021-detail-02.jpg" width="1199" height="1800" alt="Second detail" loading="lazy"><figcaption>detail</figcaption></figure>
+    <figure class="cut"><img src="img/cut/prayer-2021-detail-01.webp" width="913" height="1600" alt="Detail of a column" loading="lazy"><figcaption>detail</figcaption></figure>
+    <figure class="cut"><img src="img/cut/prayer-2021-detail-02.webp" width="1045" height="1600" alt="Second detail" loading="lazy"><figcaption>detail</figcaption></figure>
     <figure><video src="vid/prayer-2023-site.mp4" width="960" height="540" poster="vid/prayer-2023-site-poster.jpg" controls muted loop playsinline preload="none" data-autoplay></video><figcaption>2023 restaging, on site</figcaption></figure>
     <figure><img src="img/prayer-2023-restaging.jpg" width="1800" height="1056" alt="The 2023 restaging" loading="lazy"><figcaption>2023 restaging</figcaption></figure>
   </div>
@@ -416,7 +436,7 @@
     <p class="note">A treadmill runs against a timber railway sleeper. The machine built to go nowhere wears the wood away over the length of the exhibition. From its label: <span class="q">“the worn tree is a small thing, and the sadness is hidden inside it.”</span></p>
   </div>
   <div class="work-body">
-    <figure class="narrow"><img src="img/sadness-2021-site.jpg" width="1439" height="1800" alt="A weathered railway sleeper marked with a chalk target, strapped upright to a running treadmill on a steel table" loading="lazy"></figure>
+    <figure class="narrow cut"><img src="img/cut/sadness-2021-site.webp" width="1053" height="1600" alt="A weathered railway sleeper marked with a chalk target, strapped upright to a running treadmill on a steel table" loading="lazy"></figure>
   </div>
 </section>
 </div>
@@ -433,9 +453,9 @@
   </div>
   <div class="frames">
     <div class="dim" aria-hidden="true"><i></i><span>dimensions variable</span></div>
-    <figure><img src="img/lie-2021-01.jpg" width="1438" height="1800" alt="Installation view" loading="lazy"><figcaption>installation view</figcaption></figure>
+    <figure class="cut"><img src="img/cut/lie-2021-01.webp" width="1150" height="1527" alt="Installation view" loading="lazy"><figcaption>installation view</figcaption></figure>
     <figure><img src="img/lie-2021-02.jpg" width="1440" height="1800" alt="Second installation view" loading="lazy"><figcaption>installation view</figcaption></figure>
-    <figure><img src="img/lie-2021-03.jpg" width="1439" height="1800" alt="Third view" loading="lazy"><figcaption>third view</figcaption></figure>
+    <figure class="cut"><img src="img/cut/lie-2021-03.webp" width="608" height="884" alt="Third view" loading="lazy"><figcaption>third view</figcaption></figure>
   </div>
 </section>
 
@@ -469,7 +489,7 @@
     <p class="note">A closed irrigation loop in which the falling water level is the only readout of whether the plant is still alive. Shown here as the original visualisation; the work was never built.</p>
   </div>
   <div class="work-body">
-    <figure class="narrow"><img src="img/fountain-2022-render.jpg" width="1800" height="1012" alt="Rendered view of a low aluminium water vessel with a plant and a fountain nozzle" loading="lazy"></figure>
+    <figure class="narrow cut"><img src="img/cut/fountain-2022-render.webp" width="1273" height="588" alt="Rendered view of a low aluminium water vessel with a plant and a fountain nozzle" loading="lazy"></figure>
     <figure class="narrow"><svg class="drawing" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Drawing: an elevation 3 metres long and 1.2 metres high, as proposed"><path class="dr" pathLength="1" d="M60 108 L540 108 L540 300 L60 300 L60 108"/><path class="dr" pathLength="1" d="M60 324 L540 324"/><path class="dr" pathLength="1" d="M60 319 L60 329"/><path class="dr" pathLength="1" d="M540 319 L540 329"/><text x="300" y="344" text-anchor="middle" transform="rotate(0.0 300 344)">approx. 3 m</text><path class="dr" pathLength="1" d="M564 108 L564 300"/><path class="dr" pathLength="1" d="M559 108 L569 108"/><path class="dr" pathLength="1" d="M559 300 L569 300"/><text x="580" y="208" text-anchor="middle" transform="rotate(90.0 580 208)">1.2 m</text><text x="30" y="34" text-anchor="start">Nourished by the Fountain · 2022 · elevation, as proposed</text></svg><figcaption>the proposed size, as an elevation</figcaption></figure>
   </div>
 </section>
@@ -547,6 +567,7 @@
 
 <div class="wrap">
 <footer id="contact">
+  <img class="portrait contact-portrait" src="img/cut/portrait-haorui.webp" width="652" height="1100" alt="Haorui Yu" loading="lazy">
   <span class="kicker">Contact</span>
   <p class="contact" style="margin-top:1.2rem">
     Haorui Yu 于浩睿 · b. 1998, Tianjin · lives in Dundee<br>
@@ -627,7 +648,7 @@
 <script type="module">
 import {sampleImage, stipple, createPointCloud} from './js/pointcloud.js';
 import {createPanel} from './js/panel.js';
-const hero = document.getElementById('top'), svg = document.getElementById('marks'), heroText = hero.querySelector('.hero-text');
+const hero = document.getElementById('top'), svg = document.getElementById('marks'), heroText = hero.querySelectorAll('.hero-text, .hero-portrait');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const small = () => matchMedia('(max-width: 767px)').matches;
 const WCM = 121, HCM = 130;     // published size of the painting, in cm
@@ -696,7 +717,7 @@ else {
     for (const S of states) { S.rotY = base.rotY + px*0.45 + turn*1.95; S.rotX = base.rotX + py*0.18 - turn*0.12; S.time = time; }
     if (pc && cloudOn) { pc.state.scatter = gather; pc.render(); }
     if (panel) { panel.render(); marks(); }
-    heroText.style.opacity = 1 - Math.min(1, turn*1.6);
+    heroText.forEach(e => { e.style.opacity = 1 - Math.min(1, turn*1.6); });
     frames++;
   }
   const step = now => { const dt = Math.min(0.05, (now - last)/1000); last = now; time += dt;
